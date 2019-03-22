@@ -1,4 +1,4 @@
-@Library('kernelci') _
+@Library('kernelci-roxell') _
 import org.kernelci.debian.RootFS
 
 def r = new RootFS()
