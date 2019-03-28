@@ -1,0 +1,10 @@
+- test:
+    timeout:
+      minutes: 10
+    definitions:
+    - repository: https://github.com/Linaro/test-definitions.git
+      from: git
+      path: automated/linux/gpiod/gpiod.yaml
+      name: gpiod-tests
+      timeout:
+        minutes: 115
