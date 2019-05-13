@@ -1,0 +1,21 @@
+- test:
+    timeout:
+      minutes: 20
+    definitions:
+    - repository: https://github.com/Linaro/test-definitions.git
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: {{ ltp_name }}-{{ ltp_testname }}
+          description: "LTP {{ ltp_testname }} test plan"
+          os:
+          - debian
+          scope:
+          - functional
+      from: git
+      revision: 2019.10
+      name: {{ ltp_name }}-{{ ltp_testname }}
+      path: automated/linux/ltp/ltp.yaml
+      parameters:
+        SKIP_INSTALL: 'true'
+        TST_CMDFILES: '{{ ltp_testname }}'
+        TIMEOUT_MULTIPLIER: 3
