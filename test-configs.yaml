@@ -51,6 +51,10 @@ file_systems:
     type: debian
     ramdisk: 'buster-v4l2/20191101.1/{arch}/rootfs.cpio.gz'
 
+  debian_stretch-ltp_ramdisk:
+    type: debian
+    ramdisk: 'stretch-ltp/20190510.0/{arch}/rootfs.cpio.gz'
+
 
 test_plan_default_filters:
 
@@ -215,6 +219,18 @@ test_plans:
           defconfig:
             - 'defconfig+virtualvideo'
             - 'multi_v7_defconfig+virtualvideo'
+
+  ltp_ipc:
+    name: ltp_ipc
+    rootfs: debian_stretch-ltp_ramdisk
+    # FIXME - this is not very sustainable, improve template naming scheme
+    #pattern: 'ltp/{category}-{method}-{protocol}-{rootfs}-ltp-template.jinja2'
+    pattern: 'ltp/generic-uboot-tftp-ramdisk-ltp-template.jinja2'
+    params: {ltp_testname: "ipc"}
+    filters:
+      - whitelist:
+          defconfig:
+            - 'defconfig'
 
 
 device_default_filters:
@@ -1522,6 +1538,7 @@ test_configs:
     test_plans:
       - baseline
       - boot
+      - ltp_ipc
       - simple
 
   - device_type: mustang
@@ -1590,12 +1607,14 @@ test_configs:
       - baseline_qemu
       - baseline-uefi_arm
       - boot_qemu
+      - ltp_ipc
 
   - device_type: qemu_arm-virt-gicv3
     test_plans:
       - baseline_qemu
       - baseline-uefi_arm
       - boot_qemu
+      - ltp_ipc
       - simple_qemu
       - v4l2-compliance-vivid
 
@@ -1604,12 +1623,14 @@ test_configs:
       - baseline_qemu
       - baseline-uefi_arm64
       - boot_qemu
+      - ltp_ipc
 
   - device_type: qemu_arm64-virt-gicv3
     test_plans:
       - baseline_qemu
       - baseline-uefi_arm64
       - boot_qemu
+      - ltp_ipc
       - simple_qemu
       - v4l2-compliance-vivid
 
@@ -1618,6 +1639,7 @@ test_configs:
       - baseline_qemu
       - baseline-uefi_i386
       - boot_qemu
+      - ltp_ipc
       - simple_qemu
 
   - device_type: qemu_x86_64
@@ -1626,6 +1648,7 @@ test_configs:
       - baseline-uefi_x86_64
       - baseline-uefi_x86-mixed
       - boot_qemu
+      - ltp_ipc
       - simple_qemu
       - v4l2-compliance-vivid
 

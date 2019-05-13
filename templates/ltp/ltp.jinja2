@@ -1,0 +1,25 @@
+- test:
+    timeout:
+      minutes: 20
+    definitions:
+    - repository: https://github.com/Linaro/test-definitions.git
+        metadata:
+          format: Lava-Test Test Definition 1.0
+          name: ltp-ipc
+          description: "LTP ipc test plan"
+          os:
+          - debian
+          scope:
+          - functional
+      from: git
+      name: {{ plan_name }}
+      path: automated/linux/ltp/ltp.yaml
+      parameters:
+        SKIP_INSTALL: 'true'
+        TST_CMDFILES: '{{ ltp_testname }}'
+        SKIPFILE: skipfile-lkft.yaml
+        BOARD: '{{ DEVICE_TYPE }}'
+        BRANCH: ''
+        ENVIRONMENT: 'production'
+        TIMEOUT_MULTIPLIER: 3
+
