@@ -61,6 +61,10 @@ file_systems:
     type: debian
     ramdisk: 'stretch-v4l2/20190607.0/{arch}/rootfs.cpio.gz'
 
+  debian_stretch-ltp_ramdisk:
+    type: debian
+    ramdisk: 'stretch-ltp/20190510.0/{arch}/rootfs.cpio.gz'
+
 
 test_plan_default_filters:
 
@@ -156,6 +160,27 @@ test_plans:
             - 'defconfig+virtualvideo'
             - 'multi_v7_defconfig+virtualvideo'
 
+  ltp-ipc:
+    rootfs: debian_stretch-ltp_ramdisk
+    # FIXME - this is not very sustainable, improve template naming scheme
+    #pattern: 'ltp/{category}-{method}-{protocol}-{rootfs}-ltp-template.jinja2'
+    pattern: 'ltp/generic-uboot-tftp-ramdisk-ltp-template.jinja2'
+    params: {ltp_testname: "ipc"}
+    filters:
+      - whitelist:
+          defconfig:
+            - 'defconfig'
+
+#  ltp_qemu:
+#    name: ltp
+#    rootfs: debian_stretch-ltp_ramdisk
+#    pattern: 'ltp/generic-qemu-ltp-template.jinja2'
+#    params: {ltp_testname: "ipc"}
+#    filters:
+#      - whitelist:
+#          defconfig:
+#            - 'defconfig'
+#            - 'multi_v7_defconfig'
 
 device_default_filters:
 
@@ -1198,13 +1223,13 @@ test_configs:
     test_plans: [boot]
 
   - device_type: qemu_arm
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
 
   - device_type: qemu_arm64
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
 
   - device_type: qemu_x86_64
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
 
   - device_type: r8a7791_porter
     test_plans: [boot]
@@ -1213,6 +1238,7 @@ test_configs:
     test_plans:
       - baseline
       - boot
+      - ltp-ipc
       - v4l2_compliance_uvc
 
   - device_type: rk3399_gru_kevin
@@ -1236,6 +1262,7 @@ test_configs:
       - boot_nfs
       - cros-ec
       - igt
+      - ltp-ipc
       - sleep
       - usb
       - v4l2_compliance_uvc
@@ -1286,16 +1313,16 @@ test_configs:
     test_plans: [boot]
 
   - device_type: x86_atom330
-    test_plans: [boot, boot_nfs, kselftest, simple]
+    test_plans: [boot, boot_nfs, kselftest, simple, ltp-ipc]
 
   - device_type: x86_celeron
-    test_plans: [boot, boot_nfs, simple]
+    test_plans: [boot, boot_nfs, simple, ltp-ipc]
 
   - device_type: x86_pentium4
-    test_plans: [boot, boot_nfs, simple]
+    test_plans: [boot, boot_nfs, simple, ltp-ipc]
 
   - device_type: x86_x5_z8350
-    test_plans: [boot, boot_nfs]
+    test_plans: [boot, boot_nfs, ltp-ipc]
 
   - device_type: zynq_zc702
     test_plans: [boot]
