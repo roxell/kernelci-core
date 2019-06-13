@@ -1,17 +1,30 @@
 {% extends 'base/kernel-ci-base.jinja2' %}
 {% set ctx_arch = arch %}
 {% if arch == "arm" %}
+{% set ctx_arch = 'arm64' %}
+{% set ctx_extra_options = '-machine gic-version=3'
 {% set ctx_cpu = 'cortex-a15' %}
 {% set console_dev = 'ttyAMA0' %}
+{% set image_url_uefi = 'http://people.linaro.org/~ard.biesheuvel/kernelci/QEMU_EFI.fd-ARM-RELEASE-325ad6226099' %}
 {% endif %}
 {% if arch == "arm64" %}
+{% set ctx_arch = 'arm64' %}
+{% set ctx_extra_options = '-machine gic-version=3'
 {% set ctx_cpu = 'cortex-a57' %}
 {% set console_dev = 'ttyAMA0' %}
+{% set image_url_uefi = 'http://people.linaro.org/~ard.biesheuvel/kernelci/QEMU_EFI.fd-AARCH64-RELEASE-325ad6226099' %}
 {% endif %}
 {% if arch == 'x86_64' %}
-{% set ctx_arch = 'x86_64' %}
+{% set ctx_arch = 'amd64' %}
 {% set ctx_cpu = 'host' %}
 {% set console_dev = 'ttyS0' %}
+{% set image_url_uefi = 'http://people.linaro.org/~ard.biesheuvel/kernelci/OVMF.fd-X64-RELEASE-325ad6226099' %}
+{% endif %}
+{% if arch == 'i386' %}
+{% set ctx_arch = 'i386' %}
+{% set ctx_cpu = 'host' %}
+{% set console_dev = 'ttyS0' %}
+{% set image_url_uefi = 'http://people.linaro.org/~ard.biesheuvel/kernelci/OVMF.fd-IA32-RELEASE-325ad6226099' %}
 {% endif %}
 {% block metadata %}
 {{ super() }}
@@ -22,6 +35,9 @@
 {% block actions %}
 context:
   arch: {{ ctx_arch }}
+{% if arch == 'arm' or arch == 'arm64' %}
+  extra_options: {{ ctx_extra_options }}
+{% endif %}
   cpu: {{ ctx_cpu }}
   guestfs_interface: virtio
 
@@ -34,7 +50,7 @@ actions:
     images:
       bios:
         image_arg: '-bios {bios}'
-        url: http://people.linaro.org/~ard.biesheuvel/kernelci/OVMF.fd-IA32-RELEASE-325ad6226099
+        url: {{ image_url_uefi }}
       kernel:
 {%- block image_arg %}
         image_arg: '-kernel {kernel} -append "console={{ console_dev }},115200 root=/dev/ram0 debug verbose"'

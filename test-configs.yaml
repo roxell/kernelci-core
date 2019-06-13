@@ -160,6 +160,14 @@ test_plans:
             - 'defconfig+virtualvideo'
             - 'multi_v7_defconfig+virtualvideo'
 
+  uefi:
+    rootfs: buildroot_ramdisk
+    pattern: 'uefi/generic-qemu-uefi-boot-template.jinja2'
+    filters:
+      - whitelist:
+          defconfig:
+            - 'defconfig'
+
   ltp-ipc:
     rootfs: debian_stretch-ltp_ramdisk
     # FIXME - this is not very sustainable, improve template naming scheme
@@ -1223,13 +1231,13 @@ test_configs:
     test_plans: [boot]
 
   - device_type: qemu_arm
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc, uefi]
 
   - device_type: qemu_arm64
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc, uefi]
 
   - device_type: qemu_x86_64
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc, uefi]
 
   - device_type: r8a7791_porter
     test_plans: [boot]
