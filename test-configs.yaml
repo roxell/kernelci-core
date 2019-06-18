@@ -160,13 +160,29 @@ test_plans:
             - 'defconfig+virtualvideo'
             - 'multi_v7_defconfig+virtualvideo'
 
-  uefi:
+  uefi-arm64-gicv2:
     rootfs: buildroot_ramdisk
+    params: {gicversion: "gic-version=2", ctx_cpu: "cortex-a57"}
     pattern: 'uefi/generic-qemu-uefi-boot-template.jinja2'
-    filters:
-      - whitelist:
-          defconfig:
-            - 'defconfig'
+
+  uefi-arm64-gicv3:
+    rootfs: buildroot_ramdisk
+    params: {gicversion: "gic-version=3", ctx_cpu: "cortex-a57"}
+    pattern: 'uefi/generic-qemu-uefi-boot-template.jinja2'
+
+  uefi-arm-gicv2:
+    rootfs: buildroot_ramdisk
+    params: {gicversion: "gic-version=2", ctx_cpu: "cortex-a15"}
+    pattern: 'uefi/generic-qemu-uefi-boot-template.jinja2'
+
+  uefi-arm-gicv3:
+    rootfs: buildroot_ramdisk
+    params: {gicversion: "gic-version=3", ctx_cpu: "cortex-a15"}
+    pattern: 'uefi/generic-qemu-uefi-boot-template.jinja2'
+    #    filters:
+    #      - whitelist:
+    #          defconfig:
+    #            - 'defconfig'
 
   ltp-ipc:
     rootfs: debian_stretch-ltp_ramdisk
@@ -1231,13 +1247,16 @@ test_configs:
     test_plans: [boot]
 
   - device_type: qemu_arm
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc, uefi]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
 
   - device_type: qemu_arm64
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc, uefi]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc, uefi-arm-gicv2, uefi-arm-gicv3, uefi-arm64-gicv2, uefi-arm64-gicv3]
 
   - device_type: qemu_x86_64
-    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc, uefi]
+    test_plans: [boot_qemu, simple_qemu, v4l2_compliance_qemu_vivid, ltp-ipc]
+
+    #  - device_type: qemu_i386
+    #    test_plans: [uefi]
 
   - device_type: r8a7791_porter
     test_plans: [boot]
