@@ -18,9 +18,12 @@
 {% endif %}
 {% if arch == 'x86_64' %}
 {% set ctx_arch = 'amd64' %}
-{% set ctx_cpu = 'host' %}
-{% set console_dev = 'ttyS0' %}
+{% if ctx_cpu = 'host' %}
 {% set image_url_uefi = 'http://people.linaro.org/~ard.biesheuvel/kernelci/OVMF.fd-X64-RELEASE-325ad6226099' %}
+{% else %}
+{% set image_url_uefi = 'http://people.linaro.org/~ard.biesheuvel/kernelci/OVMF.fd-IA32-RELEASE-325ad6226099' %}
+{% endif %}
+{% set console_dev = 'ttyS0' %}
 {% endif %}
 {% if arch == 'i386' %}
 {% set ctx_arch = 'i386' %}
