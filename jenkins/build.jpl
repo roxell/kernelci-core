@@ -104,6 +104,7 @@ publish_kernel \
 --kdir=${kdir} \
 --token=${SECRET} \
 --api=${params.KCI_API_URL} \
+--json-path=build-meta.json \
 """)
         }
     }
