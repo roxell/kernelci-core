@@ -19,5 +19,9 @@
             - cd /opt/bootrr && sh helpers/bootrr-auto
       lava-signal: kmsg
       from: inline
+{%- if paln_name %}
+      name: {{ plan_name }}
+{%- else %}
       name: bootrr
+{%- endif %}
       path: inline/bootrr.yaml
